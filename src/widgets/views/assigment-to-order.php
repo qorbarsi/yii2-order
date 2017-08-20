@@ -15,6 +15,6 @@ use yii\helpers\Url;
             <?php } ?>
         <?php } ?>
         
-        <input class="btn btn-success" type="submit" value="<?=yii::t('order', 'To order');?>" /> 
+        <input class="btn btn-success" type="submit" value="<?=Yii::t('order', 'To order');?>" /> 
     </form>
 </div>

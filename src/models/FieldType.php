@@ -21,9 +21,9 @@ class FieldType extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => yii::t('order', 'ID'),
-            'name' => yii::t('order', 'Name'),
-            'widget' => yii::t('order', 'Widget'),
+            'id' => Yii::t('order', 'ID'),
+            'name' => Yii::t('order', 'Name'),
+            'widget' => Yii::t('order', 'Widget'),
         ];
     }
 }

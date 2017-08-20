@@ -24,10 +24,11 @@ class ShippingType extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => yii::t('order', 'Name'),
-            'order' => yii::t('order', 'Sort'),
-            'cost' => yii::t('order', 'Cost'),
-            'free_cost_from' => yii::t('order', 'Free cost from'),
+            'name' => Yii::t('order', 'Name'),
+            'order' => Yii::t('order', 'Sort'),
+            'cost' => Yii::t('order', 'Cost'),
+            'description' => Yii::t('order', 'Description'),
+            'free_cost_from' => Yii::t('order', 'Free cost from'),
         ];
     }
 }

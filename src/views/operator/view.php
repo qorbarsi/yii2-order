@@ -9,10 +9,10 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('order', 'Orders'), 'url' =>
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-view">
-    
+
     <?=dvizh\order\widgets\ChangeStatus::widget(['model' => $model]);?>
     <p align="right"><a href="#" onclick="window.print(); return false;"><?=Yii::t('order', 'Print');?></a></p>
-        
+
     <?php
     $detailOrder = [
         'model' => $model,
@@ -24,11 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
         ],
     ];
-    
+
     if($model->client_name) {
         $detailOrder['attributes'][] = 'client_name';
     }
-    
+
     if($model->phone) {
         $detailOrder['attributes'][] = 'phone';
     }
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
     if($model->email) {
         $detailOrder['attributes'][] = 'email:email';
     }
-    
+
     if($model->promocode) {
         $detailOrder['attributes'][] = 'promocode';
     }
@@ -44,20 +44,25 @@ $this->params['breadcrumbs'][] = $this->title;
     if($model->comment) {
         $detailOrder['attributes'][] = 'comment';
     }
-    
+
     if($model->payment_type_id && isset($paymentTypes[$model->payment_type_id])) {
         $detailOrder['attributes'][] = [
             'attribute' => 'payment_type_id',
             'value'		=> @$paymentTypes[$model->payment_type_id],
         ];
     }
-    
+
     if($model->shipping_type_id && isset($shippingTypes[$model->shipping_type_id])) {
 			$detailOrder['attributes'][] = [
 				'attribute' => 'shipping_type_id',
 				'value'		=> $shippingTypes[$model->shipping_type_id],
 			];
     }
+
+    if($model->address) {
+        $detailOrder['attributes'][] = 'address';
+    }
+
 
     if($model->delivery_type == 'totime') {
         $detailOrder['attributes'][] = 'delivery_time_date';
@@ -73,17 +78,17 @@ $this->params['breadcrumbs'][] = $this->title;
 			];
         }
     }
-    
+
     if($model->seller && $model->seller->userProfile) {
         $detailOrder['attributes'][] = [
-            'label' => yii::t('order', 'Seller'),
+            'label' => Yii::t('order', 'Seller'),
             'value'		=> Html::encode($model->seller->getName()),
         ];
     }
 
     echo DetailView::widget($detailOrder);
     ?>
-    
+
 	<h2><?=Yii::t('order', 'Order list'); ?></h2>
 
     <?php Pjax::begin(); ?>
@@ -114,7 +119,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             $return .= Html::tag('p', Html::encode($name).': '.Html::encode($value));
                         }
                     }
-                    
+
                     return $return;
                 }
 			],
@@ -123,6 +128,6 @@ $this->params['breadcrumbs'][] = $this->title;
             //['class' => 'yii\grid\ActionColumn', 'controller' => '/order/element', 'template' => '{delete}',  'buttonOptions' => ['class' => 'btn btn-default'], 'options' => ['style' => 'width: 75px;']],
         ],
     ]); ?>
-    <h3 align="right"><?=Yii::t('order', 'In total'); ?>: <?=$model->count;?> <?=Yii::t('order', 'on'); ?> <?=$model->cost;?> <?=Yii::$app->getModule('order')->currency;?> </h3>
+    <h3 align="right"><?=Yii::t('order', 'In total'); ?>: <?=$model->getCount();?> <?=Yii::t('order', 'on'); ?> <?=$model->cost;?> <?=Yii::$app->getModule('order')->currency;?> </h3>
     <?php Pjax::end(); ?>
 </div>

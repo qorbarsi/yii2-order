@@ -8,14 +8,14 @@ $currency = yii::$app->getModule('order')->currency;
 		<thead>
 			<tr>
 				<th>&nbsp;</th>
-				<th><?=yii::t('order', 'Today');?></th>
-				<th><?=yii::t('order', 'In month');?></th>
-				<th><?=yii::t('order', 'By month');?></th>
+				<th><?=Yii::t('order', 'Today');?></th>
+				<th><?=Yii::t('order', 'In month');?></th>
+				<th><?=Yii::t('order', 'By month');?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td><?=yii::t('order', 'Turnover');?></td>
+				<td><?=Yii::t('order', 'Turnover');?></td>
 				<td><?=round($today['total']);?><?=$currency; ?></td>
 				<td><?=round($inMonth['total'], 2);?><?=$currency; ?></td>
 				<td>
@@ -39,19 +39,19 @@ $currency = yii::$app->getModule('order')->currency;
 				</td>
 			</tr>
 			<tr>
-				<td><?=yii::t('order', 'Orders count');?></td>
+				<td><?=Yii::t('order', 'Orders count');?></td>
 				<td><?=round($today['count_orders'], 2);?></td>
 				<td><?=round($inMonth['count_orders'], 2);?></td>
 				<td><?=round($byMonth['count_orders'], 2);?></td>
 			</tr>
 			<tr>
-				<td><?=yii::t('order', 'Elements count');?></td>
+				<td><?=Yii::t('order', 'Elements count');?></td>
 				<td><?=round($today['count_elements'], 2);?></td>
 				<td><?=round($inMonth['count_elements'], 2);?></td>
 				<td><?=round($byMonth['count_elements'], 2);?></td>
 			</tr>
 			<tr>
-				<td><?=yii::t('order', 'Average check');?></td>
+				<td><?=Yii::t('order', 'Average check');?></td>
 				<td><?php if($today['count_orders']) { ?><?=round($today['total']/$today['count_orders'], 2);?><?=$currency; ?><?php } else echo 0; ?></td>
 				<td><?php if($inMonth['count_orders']) { ?><?=round($inMonth['total']/$inMonth['count_orders'], 2);?><?=$currency; ?><?php } else echo 0; ?></td>
 				<td><?php if($byMonth['count_orders']) { ?><?=round($byMonth['total']/$byMonth['count_orders'], 2);?><?=$currency; ?><?php } else echo 0; ?></td>

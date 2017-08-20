@@ -25,12 +25,12 @@ class Field extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => yii::t('order', 'ID'),
-            'description' => yii::t('order', 'Description'),
-            'name' => yii::t('order', 'Name'),
-            'type_id' => yii::t('order', 'Type'),
-            'order' => yii::t('order', 'Sort'),
-            'required' => yii::t('order', 'Required'),
+            'id' => Yii::t('order', 'ID'),
+            'description' => Yii::t('order', 'Description'),
+            'name' => Yii::t('order', 'Name'),
+            'type_id' => Yii::t('order', 'Type'),
+            'order' => Yii::t('order', 'Sort'),
+            'required' => Yii::t('order', 'Required'),
         ];
     }
     

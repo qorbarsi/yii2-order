@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use dvizh\order\widgets\Informer;
 use \yii\widgets\Pjax;
 
-$this->title = yii::t('order', 'Operator area');
+$this->title = Yii::t('order', 'Operator area');
 $this->params['breadcrumbs'][] = $this->title;
 
 use dvizh\order\assets\Asset;
@@ -24,9 +24,9 @@ $columns = [];
 $columns[] = ['attribute' => 'id', 'options' => ['style' => 'width: 49px;']];
 $columns[] = [
     'attribute' => 'count',
-    'label' => yii::t('order', 'Cnt'),
+    'label' => Yii::t('order', 'Count'),
     'content' => function($model) {
-        return $model->count;
+        return $model->getCount();
     }
 ];
 
@@ -36,14 +36,14 @@ $columns[] = [
     'content' => function($model) {
         $total = Html::tag('span', $model->cost, ['class' => 'view-url', 'data-href' => Url::toRoute(['/order/operator/view', 'id' => $model->id])]);
         if($model->promocode) {
-            $total .= Html::tag('div', $model->promocode, ['style' => 'color: orange; font-size: 80%;', yii::t('order', 'Promocode')]);
+            $total .= Html::tag('div', $model->promocode, ['style' => 'color: orange; font-size: 80%;', Yii::t('order','Promocode') ] );
         }
 
         return $total;
     },
 ];
 
-            
+
 foreach(Yii::$app->getModule('order')->orderColumns as $column) {
     if($column == 'payment_type_id') {
         $column = [
@@ -84,9 +84,22 @@ foreach(Yii::$app->getModule('order')->orderColumns as $column) {
             }
         ];
     }
-    
+
     $columns[] = $column;
 }
+
+if(Yii::$app->getModule('order')->showPaymentColumn){
+    $columns[] = [
+        'attribute' => 'payment',
+        'filter' => false,
+        'value' => function($model){
+            if ($model->payment == 'yes') {
+                return Yii::t('order', 'yes');
+            }
+            return Yii::t('order', 'no');
+        }
+    ];
+ }
 
 $columns[] = [
     'attribute' => 'date',
@@ -96,7 +109,7 @@ $columns[] = [
         return '<span title="'.date('d.m.Y H:i:s', $model->timestamp).'">'.date('H:i:s', $model->timestamp).'</span>';
     }
 ];
-        
+
 $columns[] = [
     'attribute' => 'status',
     'format' => 'html',
@@ -119,35 +132,35 @@ $columns[] = [
             min-height: 60px;
             cursor: pointer;
         }
-        
+
         .operatorka tr:hover td {
             box-shadow: 0 0 6px rgba(195, 198, 236, 0.5);
         }
-        
+
         .operatorka .status_new {
             padding: 4px;
             background-color: #CFE3DE;
         }
-        
+
         .operatorka .status_process {
             padding: 4px;
             background-color: #CCCCCC;
         }
-        
+
         .operatorka .status_done {
             padding: 4px;
             background-color: #6D948A;
         }
-        
+
         .operatorka .cancel {
             padding: 4px;
             background-color: #C9B9BB;
         }
-        
+
         #operatorkaModal .modal-body {
             height: 100vh;
         }
-        
+
         #operatorkaModal .modal-body iframe {
             border: 0px;
             width: 100%;
@@ -161,9 +174,9 @@ $columns[] = [
             if($('.pagination .active a').html() == '1' | !$('.pagination .active a').html()) {
                 $('.operator-update').click();
             }
-            
+
         }, 5000);
-        
+
         $(document).on('click', '.operatorka tbody td', function() {
             $('#operatorkaModal .modal-body').html('<iframe src="'+$(this).parent('tr').find('.view-url').data('href')+'"></iframe>');
             $('#operatorkaModal').modal().show();
@@ -175,7 +188,7 @@ $columns[] = [
         <div class="box-body">
             <div class="order-list operatorka">
                 <?php Pjax::begin(); ?>
-                    <a href="<?=Url::toRoute(['/order/operator/index']);?>" class="operator-update"> <i class="glyphicon glyphicon-refresh"></i> Обновить</a>
+                    <a href="<?=Url::toRoute(['/order/operator/index']);?>" class="operator-update"> <i class="glyphicon glyphicon-refresh"></i> <?= Yii::t('order','Обновить'); ?></a>
                     <?=  \kartik\grid\GridView::widget([
                         'export' => false,
                         'dataProvider' => $dataProvider,
@@ -195,10 +208,10 @@ $columns[] = [
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><?=yii::t('order', 'Order'); ?></h4>
+        <h4 class="modal-title" id="myModalLabel"><?=Yii::t('order', 'Order'); ?></h4>
       </div>
       <div class="modal-body">
-        
+
       </div>
     </div>
   </div>

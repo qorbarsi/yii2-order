@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-$this->title = yii::t('order', 'Order').' №'.$model->id;
+$this->title = Yii::t('order', 'Order').' №'.$model->id;
 ?>
 
 <style>
@@ -78,7 +78,7 @@ body, td, th {
     
     if($model->seller) {
         $detailOrder['attributes'][] = [
-            'label' => yii::t('order', 'Seller'),
+            'label' => Yii::t('order', 'Seller'),
             'value'		=> Html::encode($model->seller->name),
         ];
     }
@@ -104,7 +104,7 @@ body, td, th {
         <?=$model->cost;?>
         <?=Yii::$app->getModule('order')->currency;?>
         <?php if($model->promocode) { ?>
-            (<?=yii::t('order', 'Discount');?> <?=$model->promocode;?><?php if(yii::$app->has('promocode') && $code = yii::$app->promocode->checkExists($model->promocode)) { echo " {$code->discount}%"; } ?>)
+            (<?=Yii::t('order', 'Discount');?> <?=$model->promocode;?><?php if(yii::$app->has('promocode') && $code = yii::$app->promocode->checkExists($model->promocode)) { echo " {$code->discount}%"; } ?>)
         <?php } ?>
     </h3>
 </div>

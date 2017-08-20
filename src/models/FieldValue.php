@@ -30,10 +30,10 @@ class FieldValue extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => yii::t('order', 'ID'),
-            'order_id' => yii::t('order', 'Order'),
-            'field_id' => yii::t('order', 'Field'),
-            'value' => yii::t('order', 'Value'),
+            'id' => Yii::t('order', 'ID'),
+            'order_id' => Yii::t('order', 'Order'),
+            'field_id' => Yii::t('order', 'Field'),
+            'value' => Yii::t('order', 'Value'),
         ];
     }
 }

@@ -26,7 +26,7 @@ class OrderForm extends \yii\base\Widget
     {
         $shippingTypesList = ShippingType::find()->orderBy('order DESC')->all();
 
-        $shippingTypes = ['' => yii::t('order', 'Choose shipping type')];
+        $shippingTypes = ['' => Yii::t('order', 'Choose shipping type')];
         
         foreach($shippingTypesList as $sht) {
             if($sht->cost > 0) {
@@ -38,7 +38,7 @@ class OrderForm extends \yii\base\Widget
             $shippingTypes[$sht->id] = $name;
         }
         
-        $paymentTypes = ['' => yii::t('order', 'Choose payment type')];
+        $paymentTypes = ['' => Yii::t('order', 'Choose payment type')];
         $paymentTypesList = PaymentType::find()->orderBy('order DESC')->all();
         
         foreach($paymentTypesList as $pt) {

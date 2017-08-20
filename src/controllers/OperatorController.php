@@ -35,9 +35,10 @@ class OperatorController  extends Controller
     public function actionIndex()
     {
         $searchModel = new OrderSearch();
-        
+
         $searchParams = yii::$app->request->queryParams;
-        
+        $searchParams['OrderSearch']['is_deleted'] = 0;
+
         $dataProvider = $searchModel->search($searchParams);
 
         $paymentTypes = ArrayHelper::map(PaymentType::find()->all(), 'id', 'name');
@@ -50,26 +51,26 @@ class OperatorController  extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    
+
     public function actionView($id)
     {
-        $this->layout = '@vendor/dvizh/yii2-order/views/layouts/mini';
-        
+        $this->layout = '@vendor/dvizh/yii2-order/src/views/layouts/mini';
+
         $model = $this->findModel($id);
-        
+
         if($model->status == $this->module->defaultStatus) {
             $model->status = $this->module->operatorOpenStatus;
             $model->seller_user_id = yii::$app->user->id;
             $model->save(false);
         }
-        
+
         $searchModel = new ElementSearch;
         $params = yii::$app->request->queryParams;
 
         if(!is_array($params)) {
             $params = [];
         }
-        
+
         $params['ElementSearch']['order_id'] = $model->id;
 
         $dataProvider = $searchModel->search($params);
@@ -88,11 +89,11 @@ class OperatorController  extends Controller
             'model' => $model,
         ]);
     }
-    
+
     protected function findModel($id)
     {
         $orderModel = new Order;
-        
+
         if (($model = $orderModel::findOne($id)) !== null) {
             return $model;
         } else {

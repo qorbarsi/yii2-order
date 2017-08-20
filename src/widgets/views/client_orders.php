@@ -17,7 +17,7 @@ if($dateStop = yii::$app->request->get('date_stop')) {
 $columns = [
     ['attribute' => 'id', 'filter' => false, 'options' => ['style' => 'width: 49px;']],
     [
-        'label' => yii::t('order', 'Order'),
+        'label' => Yii::t('order', 'Order'),
         'content' => function($model) {
             foreach($model->elements as $element) {
                 if($productModel = $element->product) {
@@ -34,7 +34,7 @@ $columns = [
         'content' => function($model) {
             $total = $model->cost;
             if($model->promocode) {
-                $total .= Html::tag('div', $model->promocode, ['style' => 'color: orange; font-size: 80%;', yii::t('order', 'Promocode')]);
+                $total .= Html::tag('div', $model->promocode, ['style' => 'color: orange; font-size: 80%;', Yii::t('order', 'Promocode')]);
             }
 
             return $total;
@@ -63,7 +63,7 @@ $columns = [
     <?php Pjax::begin(); ?>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><?=yii::t('order', 'Search');?></h3>
+            <h3 class="panel-title"><?=Yii::t('order', 'Search');?></h3>
         </div>
         <div class="panel-body">
             <form action="<?=Url::toRoute(['/client/client/view', 'id' => $clientId]);?>" class="row search">
@@ -76,7 +76,7 @@ $columns = [
                             'value' => $dateStart,
                             'size' => 'sm',
                             'language' => 'ru',
-                            'placeholder' => yii::t('order', 'Date from'),
+                            'placeholder' => Yii::t('order', 'Date from'),
                             'clientOptions' => [
                                 'format' => 'L',
                                 'minDate' => '2015-01-01',
@@ -95,7 +95,7 @@ $columns = [
                             'addon' => false,
                             'value' => $dateStop,
                             'size' => 'sm',
-                            'placeholder' => yii::t('order', 'Date to'),
+                            'placeholder' => Yii::t('order', 'Date to'),
                             'language' => 'ru',
                             'clientOptions' => [
                                 'format' => 'L',
@@ -103,9 +103,9 @@ $columns = [
                                 'maxDate' => date('Y-m-d'),
                             ],
                             'dropdownItems' => [
-                                ['label' => yii::t('order', 'Yesterday'), 'url' => '#', 'value' => \Yii::$app->formatter->asDate('-1 day')],
-                                ['label' => yii::t('order', 'Tomorrow'), 'url' => '#', 'value' => \Yii::$app->formatter->asDate('+1 day')],
-                                ['label' => yii::t('order', 'Some value'), 'url' => '#', 'value' => 'Special value'],
+                                ['label' => Yii::t('order', 'Yesterday'), 'url' => '#', 'value' => \Yii::$app->formatter->asDate('-1 day')],
+                                ['label' => Yii::t('order', 'Tomorrow'), 'url' => '#', 'value' => \Yii::$app->formatter->asDate('+1 day')],
+                                ['label' => Yii::t('order', 'Some value'), 'url' => '#', 'value' => 'Special value'],
                             ],
                         ]);?>
                     </div>
@@ -113,7 +113,7 @@ $columns = [
 
                 <div class="col-md-2">
                     <select class="form-control" name="OrderSearch[status]">
-                        <option value=""><?=yii::t('order', 'Status');?></option>
+                        <option value=""><?=Yii::t('order', 'Status');?></option>
                         <?php foreach(yii::$app->getModule('order')->orderStatuses as $status => $statusName) { ?>
                             <option <?php if($status == yii::$app->request->get('OrderSearch')['status']) echo ' selected="selected"';?> value="<?=$status;?>"><?=$statusName;?></option>
                         <?php } ?>
@@ -123,7 +123,7 @@ $columns = [
                 <?php if($sellers = yii::$app->getModule('order')->getSellerList()) { ?>
                     <div class="col-md-2">
                         <select class="form-control" name="OrderSearch[seller_user_id]">
-                            <option value=""><?=yii::t('order', 'Seller');?></option>
+                            <option value=""><?=Yii::t('order', 'Seller');?></option>
                             <?php foreach($sellers as $seller) { ?>
                                 <option <?php if($seller->id == yii::$app->request->get('OrderSearch')['seller_user_id']) echo ' selected="selected"';?> value="<?=$seller->id;?>"><?=$seller->username;?></option>
                             <?php } ?>
@@ -133,7 +133,7 @@ $columns = [
 
                 <div class="col-md-2">
                     <input type="checkbox" <?php if(yii::$app->request->get('promocode')) echo ' checked="checked"'; ?> name="promocode" value="1" id="order-promocode" />
-                    <label for="order-promocode"><?=yii::t('order', 'Promocode');?></label>
+                    <label for="order-promocode"><?=Yii::t('order', 'Promocode');?></label>
                 </div>
 
                 <div class="col-md-2">
@@ -144,7 +144,7 @@ $columns = [
     </div>
     <div class="row">
         <div class="col-md-6">
-            <?=yii::t('order', 'Total');?>:
+            <?=Yii::t('order', 'Total');?>:
             <?=number_format($dataProvider->query->sum('cost'), 2, ',', '.');?>
             <?=yii::$app->getModule('order')->currency;?>
         </div>

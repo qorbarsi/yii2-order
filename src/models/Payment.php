@@ -26,13 +26,13 @@ class Payment extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'order_id' => yii::t('order', 'Order'),
-            'amount' => yii::t('order', 'Amount'),
-            'description' => yii::t('order', 'Description'),
-            'user_id' => yii::t('order', 'User'),
-            'date' => yii::t('order', 'Date'),
-            'payment_type_id' => yii::t('order', 'Payment type'),
-            'ip' => yii::t('order', 'IP'),
+            'order_id' => Yii::t('order', 'Order'),
+            'amount' => Yii::t('order', 'Amount'),
+            'description' => Yii::t('order', 'Description'),
+            'user_id' => Yii::t('order', 'User'),
+            'date' => Yii::t('order', 'Date'),
+            'payment_type_id' => Yii::t('order', 'Payment type'),
+            'ip' => Yii::t('order', 'IP'),
         ];
     }
     

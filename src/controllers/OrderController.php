@@ -81,11 +81,11 @@ class OrderController  extends Controller
             'hasAssignments' => (int)$hasAssignments,
         ]);
     }
-    
+
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        
+
         $searchModel = new ElementSearch;
         $params = yii::$app->request->queryParams;
         if(empty($params['ElementSearch'])) {
@@ -116,7 +116,7 @@ class OrderController  extends Controller
         $this->enableCsrfValidation = false;
 
         $model = Order::find()->orderBy('id DESC')->limit(1)->one();
-        
+
         $searchModel = new ElementSearch;
         $params = yii::$app->request->queryParams;
         if(empty($params['ElementSearch'])) {
@@ -140,7 +140,7 @@ class OrderController  extends Controller
             'model' => $model,
         ]);
     }
-    
+
     public function actionPrint($id)
     {
         $this->layout = 'print';
@@ -175,6 +175,7 @@ class OrderController  extends Controller
     public function actionCreate()
     {
         $model = new Order(['scenario' => 'customer']);
+        $isAjax = (Yii::$app->request->isAjax) ? true : false;
 
         if ($model->load(yii::$app->request->post())) {
             $model->date = date('Y-m-d');
@@ -184,11 +185,24 @@ class OrderController  extends Controller
             $model->payment = 'no';
             $model->user_id = yii::$app->user->id;
 
+            if ( isset(yii::$app->promocode) && ($promocode = yii::$app->promocode->getCode()) ) {
+                $model->promocode = $promocode;
+            }
+
             if($model->save()) {
                 if($adminNotificationEmail = yii::$app->getModule('order')->adminNotificationEmail) {
                     $sender = yii::$app->getModule('order')->mail
                         ->compose('admin_notification', ['model' => $model])
                         ->setTo($adminNotificationEmail)
+                        ->setFrom(yii::$app->getModule('order')->robotEmail)
+                        ->setSubject(Yii::t('order', 'New order')." #{$model->id} ({$model->client_name})")
+                        ->send();
+                }
+
+                if( yii::$app->getModule('order')->clientEmailNotification ) {
+                    $sender = yii::$app->getModule('order')->mail
+                        ->compose(yii::$app->getModule('order')->clientEmailNotificationView, ['model' => $model])
+                        ->setTo($model->email)
                         ->setFrom(yii::$app->getModule('order')->robotEmail)
                         ->setSubject(Yii::t('order', 'New order')." #{$model->id} ({$model->client_name})")
                         ->send();
@@ -214,7 +228,7 @@ class OrderController  extends Controller
                     $payment->payment_type_id = $paymentType->id;
                     $payment->date = date('Y-m-d H:i:s');
                     $payment->amount = $model->getCost();
-                    $payment->description = yii::t('order', 'Order #'.$model->id);
+                    $payment->description = Yii::t('order', 'Order #'.$model->id);
                     $payment->user_id = yii::$app->user->id;
                     $payment->ip = yii::$app->getRequest()->getUserIP();
                     $payment->save();
@@ -223,19 +237,25 @@ class OrderController  extends Controller
                         return $widget::widget([
                             'autoSend' => true,
                             'orderModel' => $model,
-                            'description' => yii::t('order', 'Order #'.$model->id),
+                            'description' => Yii::t('order', 'Order #'.$model->id),
                         ]);
                     }
                 }
 
-                return $this->redirect([yii::$app->getModule('order')->successUrl, 'id' => $model->id, 'payment' => $model->payment_type_id]);
+                if ( $isAjax ) {
+                    return json_encode([
+                        'orderId'  => $model->id,
+                    ]);
+                } else {
+                    return $this->redirect([yii::$app->getModule('order')->successUrl, 'id' => $model->id, 'payment' => $model->payment_type_id]);
+                }
             } else {
-                yii::$app->session->setFlash('orderError', yii::t('order', serialize($model->getErrors())));
+                yii::$app->session->setFlash('orderError', Yii::t('order', serialize($model->getErrors())));
 
                 return $this->redirect(yii::$app->request->referrer);
             }
         } else {
-            yii::$app->session->setFlash('orderError', yii::t('order', 'Error (check required fields)'));
+            yii::$app->session->setFlash('orderError', Yii::t('order', 'Error (check required fields)'));
             return $this->redirect(yii::$app->request->referrer);
         }
     }
@@ -246,11 +266,11 @@ class OrderController  extends Controller
             $model = Order::findOne($id);
             $status = yii::$app->request->post('status');
             if($model->setStatus($status)->save(false)) {
-                
+
                 $module = $this->module;
                 $orderEvent = new OrderEvent(['model' => $model]);
                 $this->module->trigger($module::EVENT_ORDER_UPDATE_STATUS, $orderEvent);
-                
+
                 die(json_encode(['result' => 'success']));
             } else {
                 die(json_encode(['result' => 'fail', 'error' => 'enable to save']));
@@ -274,7 +294,7 @@ class OrderController  extends Controller
                     $fieldValueModel->save();
                 }
             }
-            
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -325,7 +345,7 @@ class OrderController  extends Controller
 
         return json_encode($json);
     }
-    
+
     public function actionOrderSimpleCreateAjax()
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -352,7 +372,7 @@ class OrderController  extends Controller
         }
 
     }
-    
+
     protected function setCustomQueryParams($query)
     {
         if(yii::$app->request->get('promocode')) {

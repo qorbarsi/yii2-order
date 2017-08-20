@@ -14,7 +14,7 @@ if((date('Y')-$firstOrderYear) > 10) {
 
 $years = array_reverse(range($firstOrderYear, date('Y')));
 
-$this->title = yii::t('order', 'Order statistics');
+$this->title = Yii::t('order', 'Order statistics');
 
 $this->params['breadcrumbs'][] = ['label' => Yii::t('order', 'Orders'), 'url' => ['/order/default/index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -26,17 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
             <h2><?=$year;?></h2>
             <table class="table table-hover table-responsive">
                 <tr>
-                    <th><?=yii::t('order', 'Month');?></th>
-                    <th><?=yii::t('order', 'Turnover');?></th>
-                    <th><?=yii::t('order', 'Orders count');?></th>
-                    <th><?=yii::t('order', 'Average check');?></th>
+                    <th><?=Yii::t('order', 'Month');?></th>
+                    <th><?=Yii::t('order', 'Turnover');?></th>
+                    <th><?=Yii::t('order', 'Orders count');?></th>
+                    <th><?=Yii::t('order', 'Average check');?></th>
                 </tr>
                 <?php $prevStat = false; ?>
                 <?php for($m = 1; $m <= 12; $m++) { ?>
                     <?php if($m <= 9) $m = "0$m"; ?>
                     <tr>
                         <td class="month">
-                            <a href="<?=Url::toRoute(['/order/stat/month', 'y' => $year, 'm' => $m]);?>"><?=yii::t('order', "month_$m");?></a>
+                            <a href="<?=Url::toRoute(['/order/stat/month', 'y' => $year, 'm' => $m]);?>"><?=Yii::t('order', "month_$m");?></a>
                         </td>
                         <?php
                         $stat = yii::$app->order->getStatInMoth("$year-$m");

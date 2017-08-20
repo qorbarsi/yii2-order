@@ -17,7 +17,7 @@ class OneClick extends \yii\base\Widget
     public function init()
     {
         if(is_null($this->content)) {
-            $this->content = yii::t('order', 'Fast order');
+            $this->content = Yii::t('order', 'Fast order');
         }
         
         \dvizh\order\assets\OneClickAsset::register($this->getView());
@@ -35,7 +35,7 @@ class OneClick extends \yii\base\Widget
                 echo $this->render($this->view, ['mode' => $this->mode, 'showComment' => $this->showComment, 'model' => $this->model, 'orderModel' => $model]);
             });
 
-            return Html::a($this->content, '#fastOrder'.$this->model->id, ['title' => yii::t('order', 'Fast order'), 'data-toggle' => 'modal', 'data-target' => '#fastOrder'.$this->model->id, 'class' => 'btn btn-success']);
+            return Html::a($this->content, '#fastOrder'.$this->model->id, ['title' => Yii::t('order', 'Fast order'), 'data-toggle' => 'modal', 'data-target' => '#fastOrder'.$this->model->id, 'class' => 'btn btn-success']);
         } else {
             return $this->render($this->view, ['mode' => $this->mode, 'showComment' => $this->showComment, 'model' => $this->model, 'orderModel' => $model]);
         }

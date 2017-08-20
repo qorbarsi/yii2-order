@@ -17,7 +17,7 @@ $shippingTypes = ArrayHelper::map(ShippingType::find()->orderBy('order DESC')->a
         <div class="row">
             <div class="col-lg-6">
                 <div class=" panel panel-default">
-                    <div class="panel-heading"><h3><?=yii::t('order', 'Order');?></h3></div>
+                    <div class="panel-heading"><h3><?=Yii::t('order', 'Order');?></h3></div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-6">

@@ -21,9 +21,9 @@ class FieldValueVariant extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => yii::t('order', 'ID'),
-            'field_id' => yii::t('order', 'Field'),
-            'value' => yii::t('order', 'Value'),
+            'id' => Yii::t('order', 'ID'),
+            'field_id' => Yii::t('order', 'Field'),
+            'value' => Yii::t('order', 'Value'),
         ];
     }
     

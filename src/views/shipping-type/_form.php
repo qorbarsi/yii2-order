@@ -10,7 +10,9 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(); ?>
         <?= $form->field($model, 'name')->textInput() ?>
-    
+
+        <?= $form->field($model, 'description')->textInput() ?>
+
         <?= $form->field($model, 'order')->textInput() ?>
 
         <div class="row">

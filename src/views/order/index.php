@@ -9,8 +9,8 @@ use dvizh\order\assets\Asset;
 use dvizh\order\assets\OrdersListAsset;
 use dvizh\order\widgets\AssigmentToOrder;
 
-$this->title = yii::t('order', 'Orders');
-$this->params['breadcrumbs'][] = ['label' => yii::t('order', 'Orders'), 'url' => ['/order/default/index']];
+$this->title = Yii::t('order', 'Orders');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('order', 'Orders'), 'url' => ['/order/default/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -44,12 +44,12 @@ $columns[] = [
 if(Yii::$app->getModule('order')->showCountColumn){
     $columns[] = [
         'attribute' => 'count',
-        'label' => yii::t('order', 'Cnt'),
+        'label' => Yii::t('order', 'Cnt'),
         'contentOptions' => [
             'class' => 'show-details'
         ],
         'content' => function($model) {
-            return $model->count;
+            return $model->getCount();
         }
     ];
 
@@ -72,14 +72,14 @@ $columns[] = [
     'content' => function($model) {
         $total = $model->cost;
         if($model->promocode) {
-            $total .= Html::tag('div', $model->promocode, ['style' => 'color: orange; font-size: 80%;', yii::t('order', 'Promocode')]);
+            $total .= Html::tag('div', $model->promocode, ['style' => 'color: orange; font-size: 80%;', Yii::t('order', 'Promocode')]);
         }
         if  (is_object(yii::$app->getModule('order')->discountDescriptionCallback)) {
 
             $callback = yii::$app->getModule('order')->discountDescriptionCallback;
             $certificate = $callback($model->id);
             if  ($certificate) {
-                $total .= Html::tag('div',$certificate->code, ['style' => 'color: green; font-size: 80%;', yii::t('order', 'Certificate')]);
+                $total .= Html::tag('div',$certificate->code, ['style' => 'color: green; font-size: 80%;', Yii::t('order', 'Certificate')]);
             }
         } else {
             $total .= '';
@@ -92,14 +92,18 @@ $columns[] = [
 if(Yii::$app->getModule('order')->showPaymentColumn){
     $columns[] = [
         'attribute' => 'payment',
-        'filter' => Html::activeDropDownList(
+        'filter' => false,
+        /*'filter' => Html::activeDropDownList(
             $searchModel,
             'payment',
-            ['yes' => yii::t('order', 'yes'), 'no' => yii::t('order', 'no')],
+            ['yes' => Yii::t('order', 'yes'), 'no' => Yii::t('order', 'no')],
             ['class' => 'form-control', 'prompt' => Yii::t('order', 'Paid')]
-        ),
+        ),*/
         'value' => function($model){
-            return yii::t('order', $model->payment);
+            if ($model->payment == 'yes') {
+                return Yii::t('order', 'yes');
+            }
+            return Yii::t('order', 'no');
         }
     ];
  }
@@ -207,7 +211,7 @@ $columns[] = [
 
 if($module->elementToOrderUrl) {
     $columns[] = [
-        'label' => yii::t('order', 'Add to order'),
+        'label' => Yii::t('order', 'Add to order'),
         'content' => function($model) use ($module) {
             return '<a href="'.Url::toRoute([$module->elementToOrderUrl, 'order_id' => $model->id]).'" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></a>';
         }
@@ -223,7 +227,7 @@ $order = yii::$app->order;
 <div class="informer-widget">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title"><a href="#" style="border-bottom: 1px solid #ccc;" onclick="$('.order-statistics-body').toggle(); return false;"><?=yii::t('order', 'Statistics');?>...</a></h3>
+            <h3 class="panel-title"><a href="#" style="border-bottom: 1px solid #ccc;" onclick="$('.order-statistics-body').toggle(); return false;"><?=Yii::t('order', 'Statistics');?>...</a></h3>
         </div>
         <div class="order-statistics-body" style="display: none;">
             <div class="panel-body">
@@ -238,7 +242,7 @@ $order = yii::$app->order;
         <div class="box-body">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><?=yii::t('order', 'Search by date');?></h3>
+                    <h3 class="panel-title"><?=Yii::t('order', 'Search by date');?></h3>
                 </div>
                 <div class="order-search-body">
                     <div class="panel-body">
@@ -251,7 +255,7 @@ $order = yii::$app->order;
                             }
                             ?>
                             <div class="col-md-4">
-                                <label><?=yii::t('order', 'Date');?></label>
+                                <label><?=Yii::t('order', 'Date');?></label>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <?= DatePicker::widget([
@@ -260,7 +264,7 @@ $order = yii::$app->order;
                                             'value' => $dateStart,
                                             'size' => 'sm',
                                             'language' => 'ru',
-                                            'placeholder' => yii::t('order', 'Date from'),
+                                            'placeholder' => Yii::t('order', 'Date from'),
                                             'clientOptions' => [
                                                 'format' => 'L',
                                                 'minDate' => '2015-01-01',
@@ -273,7 +277,7 @@ $order = yii::$app->order;
                                         ]);?>
                                         <?php if($timeStart && !yii::$app->request->get('OrderSearch')) { ?>
                                             <input type="hidden" name="time_start" value="<?=Html::encode($timeStart);?>" />
-                                            <p><small><?=yii::t('order', 'Date from');?>: <?=Html::encode($timeStart);?></small></p>
+                                            <p><small><?=Yii::t('order', 'Date from');?>: <?=Html::encode($timeStart);?></small></p>
                                         <?php } ?>
                                     </div>
                                     <div class="col-md-6">
@@ -282,21 +286,21 @@ $order = yii::$app->order;
                                             'addon' => false,
                                             'value' => $dateStop,
                                             'size' => 'sm',
-                                            'placeholder' => yii::t('order', 'Date to'),
+                                            'placeholder' => Yii::t('order', 'Date to'),
                                             'language' => 'ru',
                                             'clientOptions' => [
                                                 'format' => 'L',
                                                 'minDate' => '2015-01-01',
                                             ],
                                             'dropdownItems' => [
-                                                ['label' => yii::t('order', 'Yesterday'), 'url' => '#', 'value' => \Yii::$app->formatter->asDate('-1 day')],
-                                                ['label' => yii::t('order', 'Tomorrow'), 'url' => '#', 'value' => \Yii::$app->formatter->asDate('+1 day')],
-                                                ['label' => yii::t('order', 'Some value'), 'url' => '#', 'value' => 'Special value'],
+                                                ['label' => Yii::t('order', 'Yesterday'), 'url' => '#', 'value' => \Yii::$app->formatter->asDate('-1 day')],
+                                                ['label' => Yii::t('order', 'Tomorrow'), 'url' => '#', 'value' => \Yii::$app->formatter->asDate('+1 day')],
+                                                ['label' => Yii::t('order', 'Some value'), 'url' => '#', 'value' => 'Special value'],
                                             ],
                                         ]);?>
                                         <?php if($timeStop && !yii::$app->request->get('OrderSearch')) { ?>
                                             <input type="hidden" name="time_stop" value="<?=Html::encode($timeStop);?>" />
-                                            <p><small><?=yii::t('order', 'Date to');?>: <br /><?=Html::encode($timeStop);?></small></p>
+                                            <p><small><?=Yii::t('order', 'Date to');?>: <br /><?=Html::encode($timeStop);?></small></p>
                                         <?php } ?>
                                     </div>
                                 </div>
@@ -319,8 +323,8 @@ $order = yii::$app->order;
                 <div class="tabs row">
                     <div class="col-md-6">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li <?php if($tab == 'orders') { ?>class="active"<?php } ?>><a href="<?=Url::toRoute(['/order/order/index', 'tab' => 'orders']);?>"><?=yii::t('order', 'Orders');?></a></li>
-                                <li <?php if($tab == 'assigments') { ?>class="active"<?php } ?>><a href="<?=Url::toRoute(['/order/order/index', 'tab' => 'assigments']);?>"><?=yii::t('order', 'Assigments');?></a></li>
+                            <li <?php if($tab == 'orders') { ?>class="active"<?php } ?>><a href="<?=Url::toRoute(['/order/order/index', 'tab' => 'orders']);?>"><?=Yii::t('order', 'Orders');?></a></li>
+                                <li <?php if($tab == 'assigments') { ?>class="active"<?php } ?>><a href="<?=Url::toRoute(['/order/order/index', 'tab' => 'assigments']);?>"><?=Yii::t('order', 'Assigments');?></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -339,7 +343,7 @@ $order = yii::$app->order;
                         ?>
                         <h3>
                             <?php
-                            echo yii::t('order', 'Paid') . ": ";
+                            echo Yii::t('order', 'Paid') . ": ";
                             $query = clone $dataProvider->query;
                             echo number_format($query->where('payment <> \'no\'')->sum('cost'), 2, ',', '.') . $module->currency;
                             ?>
@@ -358,7 +362,7 @@ $order = yii::$app->order;
                     ?>
                 </div>
             </div>
-            
+
             <div class="order-list">
                 <?=  \kartik\grid\GridView::widget([
                     'export' => false,

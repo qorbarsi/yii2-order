@@ -42,9 +42,9 @@ class PaymentType extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => yii::t('order', 'Name'),
-            'order' => yii::t('order', 'Sort'),
-            'widget' => yii::t('order', 'Widget'),
+            'name' => Yii::t('order', 'Name'),
+            'order' => Yii::t('order', 'Sort'),
+            'widget' => Yii::t('order', 'Widget'),
         ];
     }
 }

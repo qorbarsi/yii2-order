@@ -9,7 +9,7 @@ $daysCount = cal_days_in_month(CAL_GREGORIAN, $m, $y);
 
 $days = range(1, $daysCount);
 
-$this->title = $month.' - '.yii::t('order', 'Order statistics per month');
+$this->title = $month.' - '.Yii::t('order', 'Order statistics per month');
 
 $this->params['breadcrumbs'][] = ['label' => Yii::t('order', 'Orders'), 'url' => ['/order/default/index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('order', 'Order statistics'), 'url' => ['index']];
@@ -32,19 +32,19 @@ $this->params['breadcrumbs'][] = $month;
         $nextMonth = strtotime(date("$y-$m-27"))+864000;
         ?>
         <p>
-            <a href="<?=Url::toRoute(['/order/stat/month/', 'y' => date('Y', $prevMonth), 'm' => date('m', $prevMonth)]);?>">&larr; <?=yii::t('order', 'Previous');?></a>
+            <a href="<?=Url::toRoute(['/order/stat/month/', 'y' => date('Y', $prevMonth), 'm' => date('m', $prevMonth)]);?>">&larr; <?=Yii::t('order', 'Previous');?></a>
             |
             <?php if(date('Ymd', $nextMonth) < date('Ymd')) { ?>
-                <a href="<?=Url::toRoute(['/order/stat/month/', 'y' => date('Y', $nextMonth), 'm' => date('m', $nextMonth)]);?>"> <?=yii::t('order', 'Next');?> &rarr;</a>
+                <a href="<?=Url::toRoute(['/order/stat/month/', 'y' => date('Y', $nextMonth), 'm' => date('m', $nextMonth)]);?>"> <?=Yii::t('order', 'Next');?> &rarr;</a>
             <?php } ?>
             
         </p>
         <table class="table table-hover table-responsive">
             <tr>
-                <th><?=yii::t('order', 'Day');?></th>
-                <th><?=yii::t('order', 'Turnover');?></th>
-                <th><?=yii::t('order', 'Orders count');?></th>
-                <th><?=yii::t('order', 'Average check');?></th>
+                <th><?=Yii::t('order', 'Day');?></th>
+                <th><?=Yii::t('order', 'Turnover');?></th>
+                <th><?=Yii::t('order', 'Orders count');?></th>
+                <th><?=Yii::t('order', 'Average check');?></th>
             </tr>
             <?php $prevStat = false; ?>
             <?php foreach($days as $d) { ?>
@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $month;
                     <td class="month">
                         <a href="<?=Url::toRoute(['/order/order/index', 'date_start' => "$y-$m-$fd"]);?>">
                             <strong><?=$d;?></strong>
-                            <?=yii::t('order', 'dayname_'.date("w", strtotime("$y-$m-$fd")));?>
+                            <?=Yii::t('order', 'dayname_'.date("w", strtotime("$y-$m-$fd")));?>
                         </a>
                     </td>
                     <?php

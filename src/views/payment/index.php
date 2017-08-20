@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use dvizh\order\assets\Asset;
 Asset::register($this);
 
-$this->title = yii::t('order', 'Payments');
+$this->title = Yii::t('order', 'Payments');
 
 $this->params['breadcrumbs'][] = $this->title;
 ?>

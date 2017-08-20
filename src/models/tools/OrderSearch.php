@@ -27,7 +27,7 @@ class OrderSearch extends Order
         $query = Order::find();
 
         $query->joinWith('elementsRelation')->groupBy('{{%order}}.id');
-        
+
         if($elementTypes = yii::$app->request->get('element_types')) {
             $query->andFilterWhere(['{{%order_element}}.model' => $elementTypes])->groupBy('{{%order}}.id');
         }
@@ -54,11 +54,11 @@ class OrderSearch extends Order
             'promocode' => $this->promocode,
             'seller_user_id' => $this->seller_user_id,
         ]);
-        
+
         if(isset($this->id)) {
             $query->andWhere(['{{%order}}.id' => $this->id]);
-        }        
-        
+        }
+
         if(isset($this->is_deleted)) {
             $query->andWhere(['{{%order}}.is_deleted' => $this->is_deleted]);
         }

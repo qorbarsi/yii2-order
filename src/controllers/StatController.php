@@ -41,7 +41,7 @@ class StatController  extends Controller
             'model' => $model,
         ]);
     }
-    
+
     public function actionMonth($y = null, $m = null)
     {
         $m = Html::encode($m);
@@ -52,7 +52,7 @@ class StatController  extends Controller
         return $this->render('month', [
             'm' => $m,
             'y' => $y,
-            'month' => yii::t('order', "month_$m"),
+            'month' => Yii::t('order', "month_$m"),
             'model' => $model,
         ]);
     }

@@ -38,38 +38,38 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
     public function emailAndPhoneValidation($attribute, $params)
     {
         if(empty($this->phone) && empty($this->email)) {
-            $this->addError($attribute, yii::t('order', 'Phone or email is required'));
+            $this->addError($attribute, Yii::t('order', 'Phone or email is required'));
         }
     }
 
     public function attributeLabels()
     {
         return [
-            'id' => yii::t('order', 'ID'),
-            'client_name' => yii::t('order', 'Client name'),
-            'shipping_type_id' => yii::t('order', 'Delivery'),
-            'delivery_time_date' => yii::t('order', 'Delivery date'),
-            'delivery_time_hour' => yii::t('order', 'Delivery hour'),
-            'delivery_time_min' => yii::t('order', 'Delivery minute'),
-            'delivery_type' => yii::t('order', 'Delivery time'),
-            'payment_type_id' => yii::t('order', 'Payment type'),
-            'comment' => yii::t('order', 'Comment'),
-            'phone' => yii::t('order', 'Phone'),
-            'promocode' => yii::t('order', 'Promocode'),
-            'date' => yii::t('order', 'Date'),
-            'email' => yii::t('order', 'Email'),
-            'payment' => yii::t('order', 'Paid'),
-            'status' => yii::t('order', 'Status'),
-            'time' => yii::t('order', 'Time'),
-            'user_id' => yii::t('order', 'User ID'),
-            'count' => yii::t('order', 'Count'),
-            'cost' => yii::t('order', 'Cost'),
-            'base_cost' => yii::t('order', 'Base cost'),
-            'seller_user_id' => yii::t('order', 'Seller'),
-            'address' => yii::t('order', 'Address'),
-            'organization_id' => yii::t('order', 'organization'),
-            'is_assigment' => yii::t('order', 'Assigment'),
-            'is_deleted' => yii::t('order', 'Deleted'),
+            'id' => Yii::t('order', 'ID'),
+            'client_name' => Yii::t('order', 'Client name'),
+            'shipping_type_id' => Yii::t('order', 'Delivery'),
+            'delivery_time_date' => Yii::t('order', 'Delivery date'),
+            'delivery_time_hour' => Yii::t('order', 'Delivery hour'),
+            'delivery_time_min' => Yii::t('order', 'Delivery minute'),
+            'delivery_type' => Yii::t('order', 'Delivery time'),
+            'payment_type_id' => Yii::t('order', 'Payment type'),
+            'comment' => Yii::t('order', 'Comment'),
+            'phone' => Yii::t('order', 'Phone'),
+            'promocode' => Yii::t('order', 'Promocode'),
+            'date' => Yii::t('order', 'Date'),
+            'email' => Yii::t('order', 'Email'),
+            'payment' => Yii::t('order', 'Paid'),
+            'status' => Yii::t('order', 'Status'),
+            'time' => Yii::t('order', 'Time'),
+            'user_id' => Yii::t('order', 'User ID'),
+            'count' => Yii::t('order', 'Count'),
+            'cost' => Yii::t('order', 'Cost'),
+            'base_cost' => Yii::t('order', 'Base cost'),
+            'seller_user_id' => Yii::t('order', 'Seller'),
+            'address' => Yii::t('order', 'Address'),
+            'organization_id' => Yii::t('order', 'organization'),
+            'is_assigment' => Yii::t('order', 'Assigment'),
+            'is_deleted' => Yii::t('order', 'Deleted'),
         ];
     }
 
