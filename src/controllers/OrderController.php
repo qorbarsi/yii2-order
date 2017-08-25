@@ -190,6 +190,20 @@ class OrderController  extends Controller
             }
 
             if($model->save()) {
+                $module = $this->module;
+                $orderEvent = new OrderEvent(['model' => $model]);
+                $this->module->trigger($module::EVENT_ORDER_CREATE, $orderEvent);
+
+                if($fieldValues = yii::$app->request->post('FieldValue')['value']) {
+                    foreach($fieldValues as $field_id => $fieldValue) {
+                        $fieldValueModel = new FieldValue;
+                        $fieldValueModel->value = $fieldValue;
+                        $fieldValueModel->order_id = $model->id;
+                        $fieldValueModel->field_id = $field_id;
+                        $fieldValueModel->save();
+                    }
+                }
+
                 if($adminNotificationEmail = yii::$app->getModule('order')->adminNotificationEmail) {
                     $sender = yii::$app->getModule('order')->mail
                         ->compose('admin_notification', ['model' => $model])
@@ -206,21 +220,7 @@ class OrderController  extends Controller
                         ->setFrom(yii::$app->getModule('order')->robotEmail)
                         ->setSubject(Yii::t('order', 'New order')." #{$model->id} ({$model->client_name})")
                         ->send();
-                }
-
-                $module = $this->module;
-                $orderEvent = new OrderEvent(['model' => $model]);
-                $this->module->trigger($module::EVENT_ORDER_CREATE, $orderEvent);
-
-                if($fieldValues = yii::$app->request->post('FieldValue')['value']) {
-                    foreach($fieldValues as $field_id => $fieldValue) {
-                        $fieldValueModel = new FieldValue;
-                        $fieldValueModel->value = $fieldValue;
-                        $fieldValueModel->order_id = $model->id;
-                        $fieldValueModel->field_id = $field_id;
-                        $fieldValueModel->save();
-                    }
-                }
+                }                
 
                 if($paymentType = $model->paymentType) {
                     $payment = new Payment;
@@ -277,7 +277,7 @@ class OrderController  extends Controller
             }
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException(Yii::t('order','The requested page does not exist.'));
     }
 
     public function actionUpdate($id)
@@ -421,7 +421,7 @@ class OrderController  extends Controller
         if (($model = $orderModel::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested order does not exist.');
+            throw new NotFoundHttpException(Yii::t('order','The requested order does not exist.'));
         }
     }
 }

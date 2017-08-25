@@ -17,7 +17,7 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
     public static function find()
     {
         $query = new OrderQuery(get_called_class());
-        
+
         return $query->with('elementsRelation');
     }
 
@@ -88,11 +88,11 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
 
         return $this;
     }
-    
+
     public function setStatus($status)
     {
         $this->status = $status;
-        
+
         return $this;
     }
 
@@ -114,24 +114,24 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
     {
         return $this->save(false);
     }
-    
+
     public function getId()
     {
         return $this->id;
     }
-    
+
     public function getCost()
     {
         return $this->cost;
     }
-    
+
     function setPaymentStatus($status)
     {
         $this->payment = $status;
-        
+
         return $this;
     }
-    
+
     public function getTotal()
     {
         return floatVal($this->hasMany(Element::className(), ['order_id' => 'id'])->sum('price*count'));
@@ -140,7 +140,7 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
     public function getTotalFormatted()
     {
         $priceFormat = yii::$app->getModule('order')->priceFormat;
-        $price = number_format($this->getPrice(), $priceFormat[0], $priceFormat[1], $priceFormat[2]);
+        $price = number_format($this->getTotal(), $priceFormat[0], $priceFormat[1], $priceFormat[2]);
         $currency = yii::$app->getModule('order')->currency;
         if (yii::$app->getModule('order')->currencyPosition == 'after') {
             return "$price $currency";
@@ -154,50 +154,50 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
         if($field = FieldValue::find()->where(['order_id' => $this->id, 'field_id' => $fieldId])->one()) {
             return $field->value;
         }
-        
+
         return null;
     }
-    
+
     public function getPaymentType()
     {
         return $this->hasOne(PaymentType::className(), ['id' => 'payment_type_id']);
     }
-    
+
     public function getUser()
     {
         $userModel = yii::$app->getModule('order')->userModel;
         if($userModel && class_exists($userModel)) {
             return $this->hasOne($userModel::className(), ['id' => 'seller_user_id']);
         }
-        
+
         return null;
     }
-    
+
     public function getClient()
     {
         return $this->getUser();
     }
-    
+
     public function getSeller()
     {
         $userModel = yii::$app->getModule('order')->sellerModel;
         if($userModel && class_exists($userModel)) {
             return $this->hasOne($userModel::className(), ['id' => 'seller_user_id']);
         }
-        
+
         return null;
     }
-    
+
     public function getPayment()
     {
         return $this->hasOne(Payment::className(), ['order_id' => 'id']);
     }
-    
+
     public function getShipping()
     {
         return $this->hasOne(ShippingType::className(), ['id' => 'shipping_type_id']);
     }
-    
+
     public function getCount()
     {
         return intval($this->hasMany(Element::className(), ['order_id' => 'id'])->sum('count'));
@@ -207,17 +207,17 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
     {
         return $this->hasMany(FieldValue::className(), ['order_id' => 'id']);
     }
-    
+
     public function getAllFields()
     {
         return Field::find()->all();
     }
-    
+
     public function getElementsRelation()
     {
         return $this->hasMany(Element::className(), ['order_id' => 'id'])->where('({{%order_element}}.is_deleted IS NULL OR {{%order_element}}.is_deleted != 1)');
     }
-    
+
     public function getElements($withModel = true)
     {
         $returnModels = [];
@@ -232,7 +232,7 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
             }
             $returnModels[$element->id] = $element;
         }
-        
+
         return $returnModels;
     }
 
@@ -249,13 +249,13 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
             return false;
         }
     }
-    
+
     public function beforeSave($insert)
     {
         if(empty($this->timestamp)) {
             $this->timestamp = time();
         }
-        
+
         if($this->isNewRecord) {
             if(empty($this->date)) {
                 $this->date = date('Y-m-d H:i:s');
@@ -263,7 +263,7 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
                 $this->timestamp = strtotime($this->date);
             }
         }
-        
+
         return parent::beforeSave($insert);
     }
 }

@@ -79,8 +79,8 @@ use yii\widgets\DetailView;
 <?php } ?>
 
 <h3 align="right">
-    <?=Yii::t('order', 'In total'); ?>:
-    <?=$model->count;?>,
-    <?=$model->total;?>
-    <?=Yii::$app->getModule('order')->currency;?>
+    <?=Yii::t('order', 'In total'); ?>: <br/>
+    <?=Yii::t('order', 'Count'); ?>: <?=$model->getCount();?> <br/>
+    <?=Yii::t('order', 'Price'); ?>: <?=$model->getCost();?> <br/>
+    <?=Yii::t('order', 'Paid'); ?>: <?=$model->getTotalFormatted();?> <br/>
 </h3>
