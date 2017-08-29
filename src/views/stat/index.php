@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php if($m <= 9) $m = "0$m"; ?>
                     <tr>
                         <td class="month">
-                            <a href="<?=Url::toRoute(['/order/stat/month', 'y' => $year, 'm' => $m]);?>"><?=Yii::t('order', "month_$m");?></a>
+                            <a href="<?=Url::toRoute(['/order/stat/month', 'y' => $year, 'm' => $m]);?>"><?=Yii::t('order', 'month_{m}', ['m'=> $m]);?></a>
                         </td>
                         <?php
                         $stat = yii::$app->order->getStatInMoth("$year-$m");
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                             <td>
                                 <?=$stat['total'];?>
-                                
+
                                 <?php
                                 if($prevStat && date('Ym') > "$year$m") {
                                     $cssClass = '';

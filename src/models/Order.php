@@ -137,17 +137,22 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
         return floatVal($this->hasMany(Element::className(), ['order_id' => 'id'])->sum('price*count'));
     }
 
+    public function getFormatted($amount)
+    {
+        return yii::$app->getModule('order')->getFormatted($amount);
+    }
+
+
     public function getTotalFormatted()
     {
-        $priceFormat = yii::$app->getModule('order')->priceFormat;
-        $price = number_format($this->getTotal(), $priceFormat[0], $priceFormat[1], $priceFormat[2]);
-        $currency = yii::$app->getModule('order')->currency;
-        if (yii::$app->getModule('order')->currencyPosition == 'after') {
-            return "$price $currency";
-        } else {
-            return "$currency $price";
-        }
+        return $this->getFormatted($this->getTotal());
     }
+
+    public function getCostFormatted()
+    {
+        return $this->getFormatted($this->getCost());
+    }
+
 
     public function getField($fieldId = null)
     {

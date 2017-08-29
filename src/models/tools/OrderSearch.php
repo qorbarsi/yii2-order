@@ -55,11 +55,11 @@ class OrderSearch extends Order
             'seller_user_id' => $this->seller_user_id,
         ]);
 
-        if(isset($this->id)) {
+        if ( isset($this->id) && !empty($this->id) ) {
             $query->andWhere(['{{%order}}.id' => $this->id]);
         }
 
-        if(isset($this->is_deleted)) {
+        if ( isset($this->is_deleted) ) {
             $query->andWhere(['{{%order}}.is_deleted' => $this->is_deleted]);
         }
 

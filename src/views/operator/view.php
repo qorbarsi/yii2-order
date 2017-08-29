@@ -45,6 +45,18 @@ $this->params['breadcrumbs'][] = $this->title;
         $detailOrder['attributes'][] = 'comment';
     }
 
+    if($model->payment) {
+        $detailOrder['attributes'][] = [
+            'attribute' => 'payment',
+            'value'		=> function($model){
+                if ($model->payment == 'yes') {
+                    return Yii::t('order', 'yes');
+                }
+                return Yii::t('order', 'no');
+            },
+        ];
+    }
+
     if($model->payment_type_id && isset($paymentTypes[$model->payment_type_id])) {
         $detailOrder['attributes'][] = [
             'attribute' => 'payment_type_id',

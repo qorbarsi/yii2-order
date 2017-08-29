@@ -91,7 +91,15 @@ foreach(Yii::$app->getModule('order')->orderColumns as $column) {
 if(Yii::$app->getModule('order')->showPaymentColumn){
     $columns[] = [
         'attribute' => 'payment',
-        'filter' => false,
+        'filter' => Html::activeDropDownList(
+            $searchModel,
+            'payment',
+            [
+                'no' => Yii::t('order', 'no'),
+                'yes' => Yii::t('order', 'yes')
+            ],
+            ['class' => 'form-control', 'prompt' => Yii::t('order', 'Payment')]
+        ),
         'value' => function($model){
             if ($model->payment == 'yes') {
                 return Yii::t('order', 'yes');
@@ -187,15 +195,35 @@ $columns[] = [
     <div class="box">
         <div class="box-body">
             <div class="order-list operatorka">
-                <?php Pjax::begin(); ?>
+                <?php
+                //Pjax::begin();
+                ?>
                     <a href="<?=Url::toRoute(['/order/operator/index']);?>" class="operator-update"> <i class="glyphicon glyphicon-refresh"></i> <?= Yii::t('order','Обновить'); ?></a>
                     <?=  \kartik\grid\GridView::widget([
                         'export' => false,
+                        'pjax' => true,
+                        //'pjaxSettings'=>[
+                        //    'neverTimeout' => false,
+                        //],
+                        'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
+                        'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+                        'filterRowOptions'=>['class'=>'kartik-sheet-style'],
+                        'toolbar'=> [
+                            ['content'=>
+                            //Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>Yii::t('kvgrid', 'Add Book'), 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
+                            Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>Yii::t('order', 'Обновить')])
+                            ],
+                            //'{export}',
+                            '{toggleData}',
+                        ],
+
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
                         'columns' => $columns,
                     ]); ?>
-                <?php Pjax::end(); ?>
+                <?php
+                //Pjax::end();
+                ?>
             </div>
         </div>
     </div>

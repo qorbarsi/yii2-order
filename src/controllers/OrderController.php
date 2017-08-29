@@ -20,6 +20,9 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use dvizh\order\events\OrderEvent;
 
+//use yii\base\ErrorException;
+use Http\Client\Exception;
+
 class OrderController  extends Controller
 {
     public function behaviors()
@@ -205,22 +208,31 @@ class OrderController  extends Controller
                 }
 
                 if($adminNotificationEmail = yii::$app->getModule('order')->adminNotificationEmail) {
-                    $sender = yii::$app->getModule('order')->mail
-                        ->compose('admin_notification', ['model' => $model])
-                        ->setTo($adminNotificationEmail)
-                        ->setFrom(yii::$app->getModule('order')->robotEmail)
-                        ->setSubject(Yii::t('order', 'New order')." #{$model->id} ({$model->client_name})")
-                        ->send();
+                    try {
+                        $sender = yii::$app->getModule('order')->mail
+                            ->compose(yii::$app->getModule('order')->adminEmailNotificationView, ['model' => $model])
+                            ->setTo($adminNotificationEmail)
+                            //->setFrom(yii::$app->getModule('order')->robotEmail)
+                            ->setSubject(Yii::t('order', 'New order')." #{$model->id} ({$model->client_name})")
+                            ->send();
+                    } catch (Exception $e) {
+                        yii::error($e->getMessage());
+                    }
                 }
 
                 if( yii::$app->getModule('order')->clientEmailNotification ) {
-                    $sender = yii::$app->getModule('order')->mail
-                        ->compose(yii::$app->getModule('order')->clientEmailNotificationView, ['model' => $model])
-                        ->setTo($model->email)
-                        ->setFrom(yii::$app->getModule('order')->robotEmail)
-                        ->setSubject(Yii::t('order', 'New order')." #{$model->id} ({$model->client_name})")
-                        ->send();
-                }                
+                    try {
+                        $sender = yii::$app->getModule('order')->mail
+                            ->compose(yii::$app->getModule('order')->clientEmailNotificationView, ['model' => $model])
+                            ->setTo($model->email)
+                            //->setFrom(yii::$app->getModule('order')->robotEmail)
+                            ->setSubject(Yii::t('order', 'New order')." #{$model->id} ({$model->client_name})")
+                            ->send();
+                    } catch (Exception $e) {
+                        yii::$app->session->setFlash('warning', Yii::t('order', 'Email confirmation was not sent to specified email.'));
+                        yii::error($e->getMessage());
+                    }
+                }
 
                 if($paymentType = $model->paymentType) {
                     $payment = new Payment;

@@ -89,25 +89,6 @@ $columns[] = [
     },
 ];
 
-if(Yii::$app->getModule('order')->showPaymentColumn){
-    $columns[] = [
-        'attribute' => 'payment',
-        'filter' => false,
-        /*'filter' => Html::activeDropDownList(
-            $searchModel,
-            'payment',
-            ['yes' => Yii::t('order', 'yes'), 'no' => Yii::t('order', 'no')],
-            ['class' => 'form-control', 'prompt' => Yii::t('order', 'Paid')]
-        ),*/
-        'value' => function($model){
-            if ($model->payment == 'yes') {
-                return Yii::t('order', 'yes');
-            }
-            return Yii::t('order', 'no');
-        }
-    ];
- }
-
 foreach(Yii::$app->getModule('order')->orderColumns as $column) {
     if($column == 'payment_type_id') {
         $column = [
@@ -188,6 +169,27 @@ $columns[] = [
         return date(yii::$app->getModule('order')->dateFormat, $model->timestamp);
     }
 ];
+
+if(Yii::$app->getModule('order')->showPaymentColumn){
+    $columns[] = [
+        'attribute' => 'payment',
+        'filter' => Html::activeDropDownList(
+            $searchModel,
+            'payment',
+            [
+                'no' => Yii::t('order', 'no'),
+                'yes' => Yii::t('order', 'yes')
+            ],
+            ['class' => 'form-control', 'prompt' => Yii::t('order', 'Payment')]
+        ),
+        'value' => function($model){
+            if ($model->payment == 'yes') {
+                return Yii::t('order', 'yes');
+            }
+            return Yii::t('order', 'no');
+        }
+    ];
+ }
 
 $columns[] = [
     'attribute' => 'status',

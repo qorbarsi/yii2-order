@@ -10,20 +10,19 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(); ?>
         <?= $form->field($model, 'name')->textInput() ?>
-    
+
         <?= $form->field($model, 'order')->textInput() ?>
-    
-        <?= $form->field($model, 'widget')->textInput(['placeholder' => 'dvizh\paymaster\widgets\PaymentForm']) ?>
-    
+
+        <?= $form->field($model, 'widget')->textInput(['placeholder' => 'path to widget']) ?>
+
         <p><?=Yii::t('order', 'Widget call automacly'); ?>:</p>
-        
+
         <pre>widgetPath::widget([
     'autoSend' => true,
     'orderModel' => $model,
     'description' => 1,
 ])</pre>
-        <p><?=Yii::t('order', 'Example')?>: <a href="https://github.com/dvizh/yii2-paymaster">dvizh/yii2-paymaster</a></p>
-        
+
         <div class="form-group">
             <?= Html::submitButton($model->isNewRecord ? Yii::t('order', 'Create') : Yii::t('order', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>

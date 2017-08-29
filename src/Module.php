@@ -29,6 +29,7 @@ class Module extends \yii\base\Module
     public $adminNotificationEmail = false;
     public $clientEmailNotification = true;
     public $clientEmailNotificationView = 'client_notification';
+    public $adminEmailNotificationView = 'admin_notification';
 
     public $currency = ' р.';
     public $currencyPosition = 'after';
@@ -67,9 +68,16 @@ class Module extends \yii\base\Module
     public $showPaymentColumn = false;
     public $showCountColumn = true;
 
+    public $mailViewPath;
+    public $useDefaultMailViewPath = false;
+
     private $mail;
 
     public $discountDescriptionCallback = '';
+
+    public $priceFormatter = null; //collable, return fomatted price
+    public $priceCrncBeforeTemplate = '{crnc} {price}';
+    public $priceCrncAfterTemplate = '{price} {crnc}';
 
     public function init()
     {
@@ -86,7 +94,17 @@ class Module extends \yii\base\Module
     {
         if ($this->mail === null) {
             $this->mail = yii::$app->getMailer();
-            $this->mail->viewPath = __DIR__ . '/mails';
+            if ($this->useDefaultMailViewPath) {
+                if (empty($this->mail->viewPath)) {
+                    $this->mail->viewPath = __DIR__ . '/mails';
+                }
+            } else {
+                if (isset($this->mailViewPath) && !empty($this->mailViewPath)) {
+                    $this->mail->viewPath = $this->mailViewPath;
+                } else {
+                    $this->mail->viewPath = __DIR__ . '/mails';
+                }
+            }
 
             if ($this->robotEmail !== null) {
                 $this->mail->messageConfig['from'] = $this->robotName === null ? $this->robotEmail : [$this->robotEmail => $this->robotName];
@@ -130,5 +148,26 @@ class Module extends \yii\base\Module
         }
 
         return [];
+    }
+
+    public function getFormatted($amount)
+    {
+
+        if ( is_callable($this->priceFormatter) ) {
+            $result = $this->priceFormatter;
+            return $result($amount);
+        } else {
+            $priceFormat = $this->priceFormat;
+            $price = number_format($amount, $priceFormat[0], $priceFormat[1], $priceFormat[2]);
+            $currency = $this->currency;
+
+            if ( $this->currencyPosition == 'after') {
+                $result = $this->priceCrncAfterTemplate;
+            } else {
+                $result = $this->priceCrncBeforeTemplate;
+            }
+
+            return str_replace(['{crnc}', '{price}'],[$currency, $price],$result);
+        }
     }
 }
