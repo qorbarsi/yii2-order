@@ -29,7 +29,7 @@ class ToolsController  extends Controller
     {
         $shippingTypeId = (int)yii::$app->request->post('shipping_type_id');
         yii::$app->session->set('orderShippingType', $shippingTypeId);
-        
+
         die(json_encode([
             'total' => yii::$app->cart->cost,
         ]));
@@ -42,7 +42,7 @@ class ToolsController  extends Controller
         $elements = Html::ul($model->elements, ['item' => function($item, $index) {
             return Html::tag(
                 'li',
-                "{$item->getModel()->getCartName()} - {$item->base_price} {$this->module->currency}x{$item->count}",
+                "{$item->getModel()->getCartName()} - {$item->getModel()->code} - {$item->base_price} {$this->module->currency}x{$item->count}",
                 ['class' => 'post']
             );
         }]);

@@ -68,6 +68,7 @@ use yii\widgets\DetailView;
         <thead>
             <tr>
                 <th><?=Yii::t('order', 'Product name'); ?></th>
+                <th><?=Yii::t('order', 'Product code'); ?></th>
                 <th><?=Yii::t('order', 'Amount'); ?></th>
                 <th><?=Yii::t('order', 'Item price'); ?></th>
                 <th><?=Yii::t('order', 'Total cost'); ?></th>
@@ -87,6 +88,7 @@ use yii\widgets\DetailView;
                     }
                     ?>
                 </td>
+                <td><?=$element->product->code; ?></td>
                 <td>
                     <?=$element->count;?>
                 </td>
@@ -99,16 +101,17 @@ use yii\widgets\DetailView;
             </tr>
         <?php } ?>
             <tr>
-                <td colspan="4">&nbsp;</td>
+                <td colspan="5">&nbsp;</td>
             </tr>
             <tr>
                 <td style="text-align: left"><b><?=Yii::t('order', 'In total'); ?></b></td>
+                <td>&nbsp;</td>
                 <td><?= $model->getCount() ?></td>
                 <td>&nbsp;</td>
                 <td><?= $model->getTotalFormatted() ?></td>
             </tr>
             <tr>
-                <td style="text-align: left" colspan="3"><b><?=Yii::t('order', 'With discount'); ?>
+                <td style="text-align: left" colspan="4"><b><?=Yii::t('order', 'With discount'); ?>
                     <?php if($model->promocode) {
                         echo $model->promocode;
                     } ?>
