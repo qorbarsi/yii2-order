@@ -335,8 +335,9 @@ $order = yii::$app->order;
             <div class="summary row">
                 <div class="col-md-4">
                     <h3>
-                        <?=number_format($dataProvider->query->sum('cost'), 2, ',', '.');?>
-                        <?=$module->currency;?>
+                        <?php
+                            echo $module->getFormatted($dataProvider->query->sum('cost'));
+                        ?>
                     </h3>
                 </div>
                 <div class="col-md-4">
@@ -347,7 +348,10 @@ $order = yii::$app->order;
                             <?php
                             echo Yii::t('order', 'Paid') . ": ";
                             $query = clone $dataProvider->query;
-                            echo number_format($query->where('payment <> \'no\'')->sum('cost'), 2, ',', '.') . $module->currency;
+                            echo $module->getFormatted($query
+                            ->where('payment <> \'no\'')
+                            ->andWhere(['{{%order}}.is_deleted' => 0])
+                            ->sum('cost'));
                             ?>
                         </h3>
                     <?php
