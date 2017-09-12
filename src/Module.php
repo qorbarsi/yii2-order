@@ -75,13 +75,10 @@ class Module extends \yii\base\Module
 
     public $discountDescriptionCallback = '';
 
-<<<<<<< HEAD
     public $priceFormatter = null; //collable, return fomatted price
     public $priceCrncBeforeTemplate = '{crnc} {price}';
     public $priceCrncAfterTemplate = '{price} {crnc}';
-=======
     public $searchByElementNameArray = null;
->>>>>>> dvizh/master
 
     public function init()
     {
@@ -98,7 +95,7 @@ class Module extends \yii\base\Module
     {
         if ($this->mail === null) {
             $this->mail = yii::$app->getMailer();
-<<<<<<< HEAD
+
             if ($this->useDefaultMailViewPath) {
                 if (empty($this->mail->viewPath)) {
                     $this->mail->viewPath = __DIR__ . '/mails';
@@ -110,9 +107,6 @@ class Module extends \yii\base\Module
                     $this->mail->viewPath = __DIR__ . '/mails';
                 }
             }
-=======
-            $this->mail->viewPath = __DIR__ . '/mails';
->>>>>>> dvizh/master
 
             if ($this->robotEmail !== null) {
                 $this->mail->messageConfig['from'] = $this->robotName === null ? $this->robotEmail : [$this->robotEmail => $this->robotName];

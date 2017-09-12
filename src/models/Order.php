@@ -163,8 +163,6 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
         return null;
     }
 
-<<<<<<< HEAD
-=======
     public function setField($fieldId, $fieldValue)
     {
         if ($field = FieldValue::find()->where(['order_id' => $this->id, 'field_id' => $fieldId])->one()) {
@@ -179,7 +177,6 @@ class Order extends \yii\db\ActiveRecord implements OrderInterface
         return $field->save();
     }
 
->>>>>>> dvizh/master
     public function getPaymentType()
     {
         return $this->hasOne(PaymentType::className(), ['id' => 'payment_type_id']);
