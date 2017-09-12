@@ -57,7 +57,15 @@ class OrderController  extends Controller
 
         $dataProvider = $searchModel->search($searchParams);
 
-        $dataProvider->query->orderBy('id DESC');
+        $dataProvider->query->joinWith('elementsRelation')->groupBy('{{%order}}.id');
+
+        $elementName = yii::$app->request->get('elementName');
+        if($elementName && strlen($elementName) > 2) {
+            $dataProvider->query->andFilterWhere(['like', '{{%order_element}}.name', $elementName]);
+        }
+
+
+        $dataProvider->query->orderBy('{{%order}}.id DESC');
 
         if($tab == 'assigments') {
             $dataProvider->query->andWhere(['{{%order}}.is_assigment' => '1']);
@@ -371,6 +379,10 @@ class OrderController  extends Controller
 
         if ($status = \Yii::$app->request->post('status')) {
             $model->status = $status;
+        }
+
+        if ($paymentTypeId = \Yii::$app->request->post('paymentTypeId')) {
+            $model->payment_type_id = $paymentTypeId;
         }
 
         if ($model->save()) {
