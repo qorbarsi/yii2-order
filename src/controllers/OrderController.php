@@ -195,7 +195,13 @@ class OrderController  extends Controller
             if($model->save()) {
                 $module = $this->module;
                 $orderEvent = new OrderEvent(['model' => $model]);
-                $this->module->trigger($module::EVENT_ORDER_CREATE, $orderEvent);
+                try {
+                    $this->module->trigger($module::EVENT_ORDER_CREATE, $orderEvent);
+                } catch (Exception $e) {
+                    yii::error($e->getMessage());
+                    yii::$app->session->setFlash('orderError', $e->getMessage());
+                    return $this->redirect(strtok(yii::$app->request->referrer, "#"));
+                }
 
                 if($fieldValues = yii::$app->request->post('FieldValue')['value']) {
                     foreach($fieldValues as $field_id => $fieldValue) {
@@ -263,12 +269,11 @@ class OrderController  extends Controller
                 }
             } else {
                 yii::$app->session->setFlash('orderError', Yii::t('order', serialize($model->getErrors())));
-
-                return $this->redirect(yii::$app->request->referrer);
+                return $this->redirect(strtok(yii::$app->request->referrer, "#"));
             }
         } else {
             yii::$app->session->setFlash('orderError', Yii::t('order', 'Error (check required fields)'));
-            return $this->redirect(yii::$app->request->referrer);
+            return $this->redirect(strtok(yii::$app->request->referrer, "#"));
         }
     }
 
